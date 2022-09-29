@@ -63,4 +63,4 @@ services:
   #rabbitmq
   rabbitmq:
     image: rabbitmq:3.8-management
-    port: [5672, 15672]
+    ports: [5672, 15672]
