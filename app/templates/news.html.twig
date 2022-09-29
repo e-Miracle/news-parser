@@ -1,0 +1,45 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+    News Page
+{% endblock %}
+
+{% block body %}
+    {% if app.user %}
+        <div class="mb-3">
+            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+        </div>
+    {% endif %}
+    <div class="container">
+        <table id="example" class="display" style="width:100%">
+            <thead>
+            <tr>
+                <th>Title</th>
+                <th>Short Description</th>
+                <th>Picture</th>
+                <th>Date Added</th>
+                <th>Date Updated</th>
+                {% if (app.user.roles.0) != 'ROLE_MODERATOR' %}
+                <th>Action</th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for new in news %}
+                <tr>
+                    <td>{{ new.title }}</td>
+                    <td>{{ new.shortDescription??"Empty" }}</td>
+                    <td><a href="{{ new.picture }}" target="_blank">View</a></td>
+                    <td>{{ new.dateAdded|date("m/d/Y") }}</td>
+                    <td>{{ new.dateUpdated|date("m/d/Y") }}</td>
+                    {% if (app.user.roles.0) != 'ROLE_MODERATOR' %}
+                        <td><a href="/news/delete/{{ new.id }}"> DELETE</a></td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <a href="{{ nextPage }}">Next Page</a>
+    <a href="{{ lastPage }}">Last Page</a>
+{% endblock %}
